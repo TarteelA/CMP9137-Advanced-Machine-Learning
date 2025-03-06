@@ -290,10 +290,13 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
     # Calculate sensitivity, specificity, and balanced accuracy
     sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0.0
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
     balanced_accuracy = (sensitivity + specificity) / 2.0
+    f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
 
     elapsed_time = time.time() - start_time
     print(f'Balanced Accuracy: {balanced_accuracy:.4f}, {elapsed_time:.2f} seconds')
+    print(f'F1-Score: {f1_score}')
     print(f'Total Test Loss: {total_test_loss:.4f}')
 
 
@@ -304,11 +307,11 @@ if __name__ == '__main__':
     print(f'Using device: {device}')
 
     # Paths and files
-    IMAGES_PATH = "visual7w-images"
-    train_data_file = "visual7w-text/v7w.TrainImages.itm.txt"
-    dev_data_file = "visual7w-text/v7w.DevImages.itm.txt"
-    test_data_file = "visual7w-text/v7w.TestImages.itm.txt"
-    sentence_embeddings_file = "v7w.sentence_embeddings-gtr-t5-large.pkl"
+    IMAGES_PATH = "ITM_Classifier-baselines/visual7w-images"
+    train_data_file = "ITM_Classifier-baselines/visual7w-text/v7w.TrainImages.itm.txt"
+    dev_data_file = "ITM_Classifier-baselines/visual7w-text/v7w.DevImages.itm.txt"
+    test_data_file = "ITM_Classifier-baselines/visual7w-text/v7w.TestImages.itm.txt"
+    sentence_embeddings_file = "ITM_Classifier-baselines/v7w.sentence_embeddings-gtr-t5-large.pkl"
     sentence_embeddings = load_sentence_embeddings(sentence_embeddings_file)
 
     # Create datasets and loaders
@@ -321,7 +324,7 @@ if __name__ == '__main__':
     #dev_dataset = ITM_Dataset(images_path, "dev_data.txt", sentence_embeddings, data_split="dev")  # whole dev data
 
     # Create the model using one of the two supported architectures
-    MODEL_ARCHITECTURE = "CNN" # options are "CNN" or "ViT"
+    MODEL_ARCHITECTURE = "ViT" # options are "CNN" or "ViT"
     USE_PRETRAINED_MODEL = True
     model = ITM_Model(num_classes=2, ARCHITECTURE=MODEL_ARCHITECTURE, PRETRAINED=USE_PRETRAINED_MODEL).to(device)
     print("\nModel Architecture:")
