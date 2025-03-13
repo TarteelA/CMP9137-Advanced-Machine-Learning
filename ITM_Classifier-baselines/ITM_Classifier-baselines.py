@@ -57,7 +57,6 @@ from torchvision import models, transforms
 from torch.utils.data import DataLoader, Dataset
 from torchvision.models import vit_b_32  
 
-
 # Custom Dataset
 class ITM_Dataset(Dataset):
     def __init__(self, images_path, data_file, sentence_embeddings, data_split, train_ratio=1.0):
@@ -165,6 +164,50 @@ class Transformer_VisionEncoder(nn.Module):
         features = self.vision_model(x)  # Shape should be (batch_size, num_features)
         return features
 
+# CNN with Attention Mechanism
+class CNN_Attention(nn.Module):
+    def __init__(self, pretrained=None):
+        super(CNN_Attention, self).__init__()
+
+        # Use ResNet18 as the base CNN
+        self.cnn = models.resnet18(pretrained=pretrained)
+        if pretrained:
+            # Freeze all layers initially
+            for param in self.cnn.parameters():
+                param.requires_grad = False
+            # Unfreeze the last two layers
+            for param in list(self.cnn.children())[-2:]:
+                for p in param.parameters():
+                    p.requires_grad = True
+        else:
+            for param in self.cnn.parameters():
+                param.requires_grad = True
+
+        # Remove the final classification layer
+        self.cnn.fc = nn.Identity()
+
+        # Attention mechanism
+        self.attention = nn.Sequential(
+            nn.Linear(512, 256),  # ResNet18 outputs 512 features
+            nn.Tanh(),
+            nn.Linear(256, 1),
+            nn.Softmax(dim=1))
+        
+        # Fully connected layer for final output
+        self.fc = nn.Linear(512, 128)
+
+    def forward(self, x):
+        # Extract features using CNN
+        features = self.cnn(x)  # Shape: (batch_size, 512)
+
+        # Apply attention mechanism
+        attention_weights = self.attention(features)  # Shape: (batch_size, 1)
+        attended_features = features * attention_weights  # Shape: (batch_size, 512)
+
+        # Pass through final fully connected layer
+        output = self.fc(attended_features)  # Shape: (batch_size, 128)
+        return output
+
 # Image-Text Matching Model
 class ITM_Model(nn.Module):
     def __init__(self, num_classes=2, ARCHITECTURE=None, PRETRAINED=None):
@@ -191,6 +234,10 @@ class ITM_Model(nn.Module):
             self.vision_model = Transformer_VisionEncoder(pretrained=PRETRAINED)
             self.fc_vit = nn.Linear(self.vision_model.num_features, 128)  # Reduce features
 
+        elif self.ARCHITECTURE == "CNN_Attention":
+            self.vision_model = CNN_Attention(pretrained=PRETRAINED)
+            self.fc_cnn_attention = nn.Linear(128, 128)  # Adjust feature size
+
         else:
             print("UNKNOWN neural architecture", ARCHITECTURE)
             exit(0)
@@ -203,6 +250,8 @@ class ITM_Model(nn.Module):
         img_features = self.vision_model(img)
         if self.ARCHITECTURE == "ViT":
             img_features = self.fc_vit(img_features) # Use the custom linear layer for ViT
+        elif self.ARCHITECTURE == "CNN_Attention":
+            img_features = self.fc_cnn_attention(img_features)  # Use the custom linear layer for CNN_Attention
         question_features = self.question_embedding_layer(question_embedding)
         answer_features = self.answer_embedding_layer(answer_embedding)
         combined_features = torch.cat((img_features, question_features, answer_features), dim=1)
@@ -323,8 +372,8 @@ if __name__ == '__main__':
     # The dev set is not used in this program and you should/could use it for example to optimise your hyperparameters
     #dev_dataset = ITM_Dataset(images_path, "dev_data.txt", sentence_embeddings, data_split="dev")  # whole dev data
 
-    # Create the model using one of the two supported architectures
-    MODEL_ARCHITECTURE = "ViT" # options are "CNN" or "ViT"
+    # Create the model using one of the supported architectures
+    MODEL_ARCHITECTURE = "CNN_Attention"  # Options: "CNN", "ViT", or "CNN_Attention"
     USE_PRETRAINED_MODEL = True
     model = ITM_Model(num_classes=2, ARCHITECTURE=MODEL_ARCHITECTURE, PRETRAINED=USE_PRETRAINED_MODEL).to(device)
     print("\nModel Architecture:")
@@ -348,4 +397,3 @@ if __name__ == '__main__':
     # Train and evaluate the model
     train_model(model, MODEL_ARCHITECTURE, train_loader, criterion, optimiser, num_epochs=10)
     evaluate_model(model, MODEL_ARCHITECTURE, test_loader, device)
-
