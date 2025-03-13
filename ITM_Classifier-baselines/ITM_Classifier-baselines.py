@@ -1,46 +1,8 @@
 ################################################################################
 # Image-Text Matching Classifier: baseline system for visual question answering
-# 
-# This program has been adapted and rewriten from the CMP9137 materials of 2024.
-# 
-# It treats the task of multi-choice visual question answering as a binary
-# classification task. This is possible by rewriting the questions from this format:
-# v7w_2358727.jpg	When was this?  Nighttime. | Daytime. | Dawn. Sunset.
-# 
-# to the following format:
-# v7w_2358727.jpg	When was this? Nighttime. 	match
-# v7w_2358727.jpg	When was this?  Daytime. 	no-match
-# v7w_2358727.jpg	When was this?  Dawn. 	no-match
-# v7w_2358727.jpg	When was this?  Sunset.	no-match
-#
-# The list above contains the image file name, the question-answer pairs, and the labels.
-# Only question types "when", "where" and "who" were used due to compute requirements. In
-# this folder, files v7w.*Images.itm.txt are used and v7w.*Images.txt are ignored. The 
-# two formats are provided for your information and convenience.
-# 
-# To enable the above this implementation provides the following classes and functions:
-# - Class ITM_Dataset() to load the multimodal data (image & text (question and answer)).
-# - Class Transformer_VisionEncoder() to create a pre-trained Vision Transformer, which
-#   can be finetuned or trained from scratch -- update USE_PRETRAINED_MODEL accordingly.
-# - Function load_sentence_embeddings() to load pre-generated sentence embeddings of questions 
-#   and answers, which were generated using SentenceTransformer('sentence-transformers/gtr-t5-large').
-# - Class ITM_Model() to create a model combining the vision and text encoders above. 
-# - Function train_model trains/finetunes one of two possible models: CNN or ViT. The CNN 
-#   model is based on resnet18, and the Vision Transformer (ViT) is based on vit_b_32.
-# - Function evaluate_model() calculates the accuracy of the selected model using test data. 
-# - The last block of code brings everything together calling all classes & functions above.
-# 
-# info of resnet18: https://pytorch.org/vision/main/models/resnet.html
-# info of vit_b_32: https://pytorch.org/vision/main/models/vision_transformer.html
-# info of SentenceTransformer: https://huggingface.co/sentence-transformers/gtr-t5-large
-#
-# This program was tested on Windows 11 using WSL and does not generate any plots. 
-# Feel free to use and extend this program as part of your our assignment work.
-#
 # Version 1.0, main functionality in tensorflow tested with COCO data 
 # Version 1.2, extended functionality for Flickr data
 # Version 1.3, ported to pytorch and tested with visual7w data
-# Contact: {hcuayahuitl}@lincoln.ac.uk
 ################################################################################
 
 import os
