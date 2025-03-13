@@ -257,7 +257,7 @@ class ITM_Model(nn.Module):
         combined_features = torch.cat((img_features, question_features, answer_features), dim=1)
         output = self.fc(combined_features)
         return output
-        
+
 def train_model(model, ARCHITECTURE, train_loader, criterion, optimiser, num_epochs=10):
     print(f'TRAINING %s model' % (ARCHITECTURE))
     model.train()
@@ -266,7 +266,7 @@ def train_model(model, ARCHITECTURE, train_loader, criterion, optimiser, num_epo
     for epoch in range(num_epochs):
         running_loss = 0.0
         total_batches = len(train_loader)
-        start_time = time.time()
+        start_time = time.time()  # Record start time for the epoch
 
         for batch_idx, (images, question_embeddings, answer_embeddings, labels) in enumerate(train_loader):
             # Move images/text/labels to the GPU (if available)
@@ -291,10 +291,16 @@ def train_model(model, ARCHITECTURE, train_loader, criterion, optimiser, num_epo
             if batch_idx % 100 == 0:
                 print(f'Epoch [{epoch + 1}/{num_epochs}], Batch [{batch_idx}/{total_batches}], Loss: {loss.item():.4f}')
         
-        # Print average loss for the epoch
+        # Calculate epoch training time
+        epoch_time = time.time() - start_time  # Time taken for this epoch
+
+        # Print average loss and training time for the epoch
         avg_loss = running_loss / total_batches
-        elapsed_time = time.time() - start_time
-        print(f'Epoch [{epoch + 1}/{num_epochs}] Average Loss: {avg_loss:.4f}, {elapsed_time:.2f} seconds')
+        print(f'Epoch [{epoch + 1}/{num_epochs}] Average Loss: {avg_loss:.4f}, Time: {epoch_time:.2f} seconds')
+
+    # Calculate total training time
+    total_training_time = time.time() - start_time  # Total time for all epochs
+    print(f'Total Training Time: {total_training_time:.2f} seconds')
 
 def evaluate_model(model, ARCHITECTURE, test_loader, device):
     print(f'EVALUATING %s model' % (ARCHITECTURE))
