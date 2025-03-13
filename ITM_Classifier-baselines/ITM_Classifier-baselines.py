@@ -302,6 +302,7 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
     total_test_loss = 0
     all_labels = []
     all_predictions = []
+    reciprocal_ranks = []  # To store reciprocal ranks for MRR calculation
     start_time = time.time()
 
     with torch.no_grad():
@@ -326,6 +327,22 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
             all_labels.extend(labels.cpu().numpy())
             all_predictions.extend(predicted_class.cpu().numpy())
 
+            # Calculate MRR
+            for i in range(len(labels)):
+                # Get the predicted probabilities for the current question
+                question_probs = predicted_probabilities[i].cpu().numpy()
+
+                # Sort the candidate answers by their predicted probabilities (descending order)
+                ranked_indices = np.argsort(question_probs)[::-1]
+
+                # Find the rank of the correct answer
+                correct_index = labels[i].item()
+                rank = np.where(ranked_indices == correct_index)[0][0] + 1  # Add 1 because ranks start at 1
+
+                # Calculate the reciprocal rank
+                reciprocal_rank = 1.0 / rank
+                reciprocal_ranks.append(reciprocal_rank)
+
     # Convert to numpy arrays for easier calculations
     all_labels = np.array(all_labels)
     all_predictions = np.array(all_predictions)
@@ -343,11 +360,14 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
     balanced_accuracy = (sensitivity + specificity) / 2.0
     f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
 
+    # Calculate Mean Reciprocal Rank (MRR)
+    mrr = np.mean(reciprocal_ranks)
+
     elapsed_time = time.time() - start_time
     print(f'Balanced Accuracy: {balanced_accuracy:.4f}, {elapsed_time:.2f} seconds')
     print(f'F1-Score: {f1_score}')
     print(f'Total Test Loss: {total_test_loss:.4f}')
-
+    print(f'Mean Reciprocal Rank (MRR): {mrr:.4f}')
 
 # Main Execution
 if __name__ == '__main__':
