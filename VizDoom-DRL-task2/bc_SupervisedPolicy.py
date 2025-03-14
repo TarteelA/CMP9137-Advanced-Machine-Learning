@@ -1,5 +1,27 @@
 ############################################################################
+<<<<<<< HEAD
 # Last update on 12 March 2025
+=======
+# bc_SupervisedPolicy.py
+#
+# This program trains a supervised policy to be used as a behaviour cloning 
+# agent to play the game of VizDoom. Prior to training, it verifies
+# whether data pre-processing is required. If that's the case, it takes 
+# single image data in order to generate data containing 4-image sequences.
+# The method preprocess_image_data() does the image pre-processing and the 
+# method run_experiment() trains the classifier and saves the model. 
+#
+# This program works together with sb_VizDoom_FromDemonstration.py -- look
+# at the workshop description of this week for further information.
+# 
+# Notes:
+# The source folder should exist with subfolders -- from collected data.
+# The target folder should not exist for it to create 4-image instances, 
+# as a pre-processing step before training the classifier.
+#
+# Contact: hcuayahuitl@lincoln.ac.uk
+# Last update on 12 March 2025.
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 ############################################################################
 
 import torch
@@ -229,4 +251,8 @@ BATCH_SIZE = 32
 if __name__ == "__main__":
     if verify_datapaths(datapath_source, datapath_target):
         preprocess_image_data(datapath_source, datapath_target)
+<<<<<<< HEAD
     run_experiment(datapath_target, model_name, BATCH_SIZE, EPOCHS)
+=======
+    run_experiment(datapath_target, model_name, BATCH_SIZE, EPOCHS)
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2

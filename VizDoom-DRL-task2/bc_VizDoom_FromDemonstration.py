@@ -1,5 +1,30 @@
 ############################################################################
+<<<<<<< HEAD
 # Last update on 12 March 2025
+=======
+# bc_VizDoom_FromDemonstration.py
+# 
+# This program has a dual role. It can be used to generate data for training 
+# a supervised model, and it can be used to test the trained model. The latter
+# can be referred to as Behavioural Cloning Agent (or BC agent) according to
+# the literature of learning from demonstration.
+#
+# To generate data, run the program as follows:
+#  python bc_VizDoom_FromDemonstration.py train human
+#
+# To evaluate the peformance of the BC agent, run it as follows:
+#  python bc_VizDoom_FromDemonstration.py test human
+#
+# The following additional dependencies may be required:
+#  pip install swig
+#  pip install box2d-py
+#  pip install gymnasium
+#  pip install vizdoom
+#  pip install readchar
+#
+# Contact: hcuayahuitl@lincoln.ac.uk
+# Last update on 12 March 2025.
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 ############################################################################
 
 import sys
@@ -16,6 +41,10 @@ import bc_SupervisedPolicy as SPT
 from sb_VizDoom import DRL_Agent
 from PIL import Image  
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 class VizDoom_LfD():
     def __init__(self, args):
         self.environmentID = "VizdoomTakeCover-v0"
@@ -47,6 +76,10 @@ class VizDoom_LfD():
         
         self.interact_with_environment()
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
     def get_actionFromArrowKeys(self):
         action = readchar.readkey()
         action = [ord(c) for c in action]
@@ -138,6 +171,10 @@ class VizDoom_LfD():
 
         return [action]
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
     def interact_with_environment(self):
         print("INTERACTING with the environment...")
 
@@ -173,10 +210,18 @@ class VizDoom_LfD():
                 break
         self.env.close()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 if len(sys.argv)<2 or len(sys.argv)>4:
     print("USAGE: bc_VizDoom_FromDemonstration.py (random|train|test) [human|others...not supported]")
     print("EXAMPLE1: python bc_VizDoom_FromDemonstration.py train human")
     print("EXAMPLE2: python bc_VizDoom_FromDemonstration.py test human")
     exit(0)
 else:
+<<<<<<< HEAD
     VizDoom_LfD(sys.argv)
+=======
+    VizDoom_LfD(sys.argv)
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2

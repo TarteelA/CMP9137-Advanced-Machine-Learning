@@ -1,8 +1,50 @@
 #####################################################
+<<<<<<< HEAD
 # Version 1.0 -- adapted for training and testing agents with MarioBros environments
 # Version 2.0 -- rewritten for training and testing agents with VizDoom environments
 # Version 2.1 -- revised for training and testing agents with non-VizDoom environments
 # such as "LunarLander-v3", which makes the program more general for DRL
+=======
+# sb-VizDoom.py
+# 
+# This program trains Deep Reinforcement Learning (DRL) agents to learn to play 
+# the games available in VizDoom. The VizDoom environments provide a first-person 
+# shooter (FPS) simulation for training agents. The agent's goal is to interact with 
+# the environment by taking/executing actions based on visual and game state information.
+# It supports agent training with different algorithms like DQN, A2C, PPO, powered by
+# stable-baselines3, and evaluating and visualising the agent's performance. 
+# 
+# Link to VizDoom: https://github.com/mwydmuch/ViZDoom
+# Link to Stable-Baselines3: https://stable-baselines3.readthedocs.io/en/master/
+#
+# This program has also been tested with non-image based environments like the popular
+# LunarLander: https://gymnasium.farama.org/environments/box2d/lunar_lander/
+#  
+# Depending on your environment setup, the key dependencies required are:
+#   pip install vizdoom
+#   pip install stable-baselines3
+#   pip install opencv-python
+# 
+# Other dependencies to install, for the LunarLander environment, include:
+#   apt-get install libapt-get update && apt-get install libgl1
+#   apt-get update && apt-get install -y python3-opencv
+#   pip install swig
+#   pip install "gymnasium[box2d]"
+# 
+# This program has also been tested in WSL compiling the code in the following link:
+# git clone https://github.com/Farama-Foundation/ViZDoom.git
+# 
+# Some research publications related to VizDoom:
+# https://arxiv.org/pdf/1605.02097
+# https://arxiv.org/pdf/1809.03470
+# https://www.diva-portal.org/smash/get/diva2:1679888/FULLTEXT01.pdf
+# 
+# Version 1.0 -- adapted for training and testing agents with MarioBros environments
+# Version 2.0 -- rewritten for training and testing agents with VizDoom environments
+# Version 2.1 -- revised for training and testing agents with non-VizDoom environments
+#                such as "LunarLander-v3", which makes the program more general for DRL.
+# Contact: hcuayahuitl@lincoln.ac.uk
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 #####################################################
 
 import os
@@ -20,6 +62,10 @@ from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import VecFrameStack, VecTransposeImage, VecMonitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 # Returns an observation containing a resised image and other info.
 # frame_skip=the number of frames to skip between actions to speed up training
 class ObservationWrapper(gymnasium.ObservationWrapper):
@@ -45,6 +91,10 @@ class ObservationWrapper(gymnasium.ObservationWrapper):
 
 # Converts RGB observations to grayscale to reduce input dimensionality.
 # gymnasium.spaces.Box() creates a continuous space for observations.
+<<<<<<< HEAD
+=======
+# see https://gymnasium.farama.org/main/_modules/gymnasium/spaces/box/
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 class GrayscaleObservationWrapper(gymnasium.ObservationWrapper):
     def __init__(self, env):
         super().__init__(env)
@@ -62,6 +112,10 @@ class GrayscaleObservationWrapper(gymnasium.ObservationWrapper):
         gray = np.expand_dims(gray, axis=-1) # expand dimensions to match input shape (H, W, 1)
         return gray
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 # Class for creating DRL agents through environment setup, model creation, training, evaluation, and policy rendering
 class DRL_Agent:
     # initialise the DRL agent with the given parameters
@@ -225,6 +279,10 @@ class DRL_Agent:
         self.evaluate_policy()
         self.render_policy()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82f69d9779f3418c8cbb1046401f24906627aac2
 if __name__ == "__main__":
     if len(sys.argv) < 2 or len(sys.argv) > 4:
         print("USAGE: sb-VizDoom.py (train|test) (DQN|A2C|PPO) [seed_number]")
