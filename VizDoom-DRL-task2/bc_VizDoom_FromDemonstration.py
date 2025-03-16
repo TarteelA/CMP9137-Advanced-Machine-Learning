@@ -31,7 +31,7 @@ class VizDoom_LfD():
         self.num_test_episodes = 20
         self.image_height_width = (84*1,84*1)
         self.policy_rendering = True
-        self.path2DemoData = "./vizdoom-1img"
+        self.path2DemoData = "VizDoom-DRL-task2/vizdoom-1img"
         self.supervisedModelID = "VizDoom-SPT.pth"
         self.demonstrationData = {}
         self.actionVector = []
