@@ -356,7 +356,7 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
     #Calculate Sensitivity, Specificity, Balanced Accuracy, and F1-Score
     sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0.0
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
-    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    precision = tp / (tp + fp)
     balanced_accuracy = (sensitivity + specificity) / 2.0
     f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
 
@@ -392,7 +392,7 @@ if __name__ == '__main__':
 
     #Create Model using One of Supported Architectures
     #Options: "CNN", "ViT", or "CNN_Attention"
-    MODEL_ARCHITECTURE = "CNN"  
+    MODEL_ARCHITECTURE = "ViT"  
     USE_PRETRAINED_MODEL = True
     model = ITM_Model(num_classes=2, ARCHITECTURE=MODEL_ARCHITECTURE, PRETRAINED=USE_PRETRAINED_MODEL).to(device)
     print("\nModel Architecture:")
