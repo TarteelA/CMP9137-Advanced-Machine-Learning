@@ -392,7 +392,7 @@ if __name__ == '__main__':
 
     #Optimise Hyperparameters
     #Whole Dev Data
-    dev_dataset = ITM_Dataset(images_path, "dev_data.txt", sentence_embeddings, data_split="dev")  
+    dev_dataset = ITM_Dataset(IMAGES_PATH, "dev_data.txt", sentence_embeddings, data_split="dev")  
 
     #Create Model using One of Supported Architectures
     #Options: "CNN", "ViT", or "CNN_Attention"
