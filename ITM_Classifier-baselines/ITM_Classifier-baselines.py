@@ -388,11 +388,7 @@ if __name__ == '__main__':
     train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
     #Whole Test Data
     test_dataset = ITM_Dataset(IMAGES_PATH, test_data_file, sentence_embeddings, data_split="test")  
-    test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False)
-
-    #Optimise Hyperparameters
-    #Whole Dev Data
-    #dev_dataset = ITM_Dataset(IMAGES_PATH, "dev_data.txt", sentence_embeddings, data_split="dev")  
+    test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False)  
 
     #Create Model using One of Supported Architectures
     #Options: "CNN", "ViT", or "CNN_Attention"
