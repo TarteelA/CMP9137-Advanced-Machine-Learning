@@ -1,8 +1,8 @@
 ################################################################################
-# Image-Text Matching Classifier: Baseline System for Visual Question Answering
-# Version 1.0, Main Functionality in Tensorflow Tested with COCO Data 
-# Version 1.2, Extended Functionality for Flickr Data
-# Version 1.3, Ported to PyTorch and Tested with Visual7w Data
+#Image-Text Matching Classifier: Baseline System for Visual Question Answering
+#Version 1.0, Main Functionality in Tensorflow Tested with COCO Data 
+#Version 1.2, Extended Functionality for Flickr Data
+#Version 1.3, Ported to PyTorch and Tested with Visual7w Data
 ################################################################################
 
 import os
