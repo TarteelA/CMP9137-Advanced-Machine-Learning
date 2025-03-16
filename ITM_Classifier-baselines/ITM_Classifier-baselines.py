@@ -266,7 +266,7 @@ def train_model(model, ARCHITECTURE, train_loader, criterion, optimiser, num_epo
             optimiser.zero_grad() 
             #Computes Gradient of Loss/Error
             loss.backward() 
-            #Updates pParameters using Gradients
+            #Updates Parameters using Gradients
             optimiser.step() 
             running_loss += loss.item()
 
@@ -332,7 +332,8 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
 
                 #Find Rank of Correct Answer
                 correct_index = labels[i].item()
-                rank = np.where(ranked_indices == correct_index)[0][0] + 1  # Add 1 because ranks start at 1
+                #Add 1 because Ranks Start at 1
+                rank = np.where(ranked_indices == correct_index)[0][0] + 1  
 
                 #Calculate Reciprocal Rank
                 reciprocal_rank = 1.0 / rank
