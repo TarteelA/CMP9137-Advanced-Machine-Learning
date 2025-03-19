@@ -358,14 +358,14 @@ def evaluate_model(model, ARCHITECTURE, test_loader, device):
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
     precision = tp / (tp + fp)
     balanced_accuracy = (sensitivity + specificity) / 2.0
-    f1_score = 2 * (precision * sensitivity) / (precision + sensitivity)
+    f1_score = 2 * (precision * sensitivity) / (precision + sensitivity) if (precision + sensitivity) > 0 else 0.0
 
     #Calculate Mean Reciprocal Rank (MRR)
     mrr = np.mean(reciprocal_ranks)
 
     elapsed_time = time.time() - start_time
     print(f'Balanced Accuracy: {balanced_accuracy:.4f}, {elapsed_time:.2f} seconds')
-    print(f'F1-Score: {f1_score}')
+    print(f'F1-Score: {f1_score:.4f}')
     print(f'Total Test Loss: {total_test_loss:.4f}')
     print(f'Mean Reciprocal Rank (MRR): {mrr:.4f}')
 
